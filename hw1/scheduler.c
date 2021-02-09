@@ -7,6 +7,7 @@
 //   -- If two jobs with same priority, lower index runs first
 void priority(int n_jobs, Job* jobs)
 {
+    qsort(jobs, n_jobs, sizeof(Job), jobcmp);
 }
 
 // Priority Scheduling with Round Robin -- Jobs with highest priority (lowest number)
