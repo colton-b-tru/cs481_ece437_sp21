@@ -4,16 +4,17 @@
 void create_procs()
 {
     int rc = fork();
+    int status;
     //grandparent
     if (rc == 0){
         parent();
-        wait(NULL);
+        waitpid(rc, &status, 1);
     }
     //child
     else{
         int gc = fork();
         if (gc == 0) {//parent
-            wait(NULL);
+            waitpid(gc, &status, 1);
             child();
         }
         else { //grandchild
