@@ -50,3 +50,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+child_procs
+jobs
+processes
+*.output
+procs.output
