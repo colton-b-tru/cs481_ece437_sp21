@@ -5,20 +5,24 @@ void create_procs()
 {
     int rc = fork();
     int status;
-    //grandparent
-    if (rc == 0){
+    //parent
+    if (rc != 0){
+        wait(NULL);
+        wait(NULL);
         parent();
-        waitpid(rc, &status, 1);
+        exit(0);
     }
-    //child
-    else{
+    //
+    else{//child 
         int gc = fork();
-        if (gc == 0) {//parent
-            waitpid(gc, &status, 1);
-            child();
-        }
-        else { //grandchild
+        if (gc == 0) {//grandchild
             grandchild();
+            exit(0);
+        }
+        else { //child
+            wait(NULL);
+            child();
+            exit(0);
         }
     }
 }
