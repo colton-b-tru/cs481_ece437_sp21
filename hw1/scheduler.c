@@ -29,13 +29,25 @@ void priority_rr(int n_jobs, Job* jobs, int time_slice)
 {
     qsort(jobs, n_jobs, sizeof(Job), jobcmp);
     while(n_jobs > 0){
-        jobs->run_job(jobs->time);
-        for(int i = 1; i < n_jobs ;i++){
-            jobs[i-1] = jobs[i]; 
+        int highestPriority = jobs->priority;
+        int highestIndex = 0;
+        for (int i = 0; i < n_jobs; i++){
+            if ((jobs[i].priority) == highestPriority) highestIndex = i;
         }
-        n_jobs--;
+        int numPriorityJobs = highestIndex + 1;
+            for(int i = 0; numPriorityJobs != 0; (i = (i+1) % numPriorityJobs)){
+                jobs[i].run_job(time_slice);
+                if (jobs[i].time == 0) {
+                    //remove finished job by shoving everything left and reducing counts
+                    for(int j = i; j < (n_jobs-1); j++){
+                        jobs[j] = jobs[j+1];
+                    }
+                    n_jobs--;
+                    numPriorityJobs--;
+                }
+            }
         
-    }
+}
 }
 
 
