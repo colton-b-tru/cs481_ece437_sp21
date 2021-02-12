@@ -37,8 +37,12 @@ void priority_rr(int n_jobs, Job* jobs, int time_slice)
         int numPriorityJobs = highestIndex + 1;
             for(int i = 0; numPriorityJobs != 0; i++){
                 int realIndex = i % numPriorityJobs;
-                jobs[realIndex].run_job(time_slice);
-                if (jobs[realIndex].time == 0) {
+                if (jobs[realIndex].time < time_slice){
+                    jobs[realIndex].run_job(jobs[realIndex].time);
+                }
+                else jobs[realIndex].run_job(time_slice);
+                jobs[realIndex].time-=time_slice;
+                if (jobs[realIndex].time <= 0) {
                     //remove finished job by shoving everything left and reducing counts
                     for(int j = realIndex; j < (n_jobs-1); j++){
                         jobs[j] = jobs[j+1];
